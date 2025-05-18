@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 import ProductCard from "../components/ProductCard";
 import { getAllProducts } from "../services/productService";
+import { getCurrentUser } from "../services/authService";
 import { useNavigate } from "react-router-dom";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
   const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  
+  const [categoryFilter, setCategoryFilter] = useState("");  
   const navigate = useNavigate();
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-    // if (!currentUser) {
-    //   navigate("/login"); // redirect to login if not authenticated
-    // }
-  }, [navigate]);
+    const currentUser = getCurrentUser(); // Either use this variable
+    if (!currentUser) {
+        navigate("/login");
+    }
+    
+    // Or remove the assignment if not needed:
+    if (!getCurrentUser()) {
+        navigate("/login");
+    }
+    }, [navigate]);
 
   useEffect(() => {
     // Ideally, filtering & search logic handled externally

@@ -1,48 +1,43 @@
-// productService.js
+// src/services/productService.js
+import { 
+  getAllProducts as mockGetAll,
+  getMyProducts as mockGetMine,
+  getProductById as mockGetById,
+  addProduct as mockAdd,
+  updateProduct as mockUpdate,
+  deleteProduct as mockDelete
+} from './mock/products';
 
-let PRODUCTS_KEY = "products";
+import { 
+  getAllProducts as firebaseGetAll,
+  getMyProducts as firebaseGetMine,
+  getProductById as firebaseGetById,
+  addProduct as firebaseAdd,
+  updateProduct as firebaseUpdate,
+  deleteProduct as firebaseDelete
+} from './firebase/products';
 
-// Get all products
-export const getAllProducts = () => {
-  return JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
+import { BACKEND_TYPE } from '../config';
+
+const productImpl = BACKEND_TYPE === 'firebase' ? {
+  getAllProducts: firebaseGetAll,
+  getMyProducts: firebaseGetMine,
+  getProductById: firebaseGetById,
+  addProduct: firebaseAdd,
+  updateProduct: firebaseUpdate,
+  deleteProduct: firebaseDelete
+} : {
+  getAllProducts: mockGetAll,
+  getMyProducts: mockGetMine,
+  getProductById: mockGetById,
+  addProduct: mockAdd,
+  updateProduct: mockUpdate,
+  deleteProduct: mockDelete
 };
 
-// Get products for current user
-export const getMyProducts = () => {
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-  return products.filter((p) => p.owner === currentUser.email);
-};
-
-// Add a new product
-export const addProduct = (product) => {
-  const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-  const newProduct = {
-    ...product,
-    id: Date.now().toString(),
-    owner: currentUser.email,
-  };
-  products.push(newProduct);
-  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
-};
-
-// Get a product by ID
-export const getProductById = (id) => {
-  const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-  return products.find((p) => p.id === id);
-};
-
-// Update a product
-export const updateProduct = (updatedProduct) => {
-  let products = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-  products = products.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
-  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
-};
-
-// Delete a product
-export const deleteProduct = (id) => {
-  let products = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-  products = products.filter((p) => p.id !== id);
-  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
-};
+export const getAllProducts = productImpl.getAllProducts;
+export const getMyProducts = productImpl.getMyProducts;
+export const getProductById = productImpl.getProductById;
+export const addProduct = productImpl.addProduct;
+export const updateProduct = productImpl.updateProduct;
+export const deleteProduct = productImpl.deleteProduct;
