@@ -9,6 +9,7 @@ export default function AddProduct() {
   async function handleSubmit(productData) {
     try {
       await addProduct(productData);
+      console.log("Product added successfully");
       navigate("/mylistings");
     } catch (error) {
       alert("Failed to add product");
