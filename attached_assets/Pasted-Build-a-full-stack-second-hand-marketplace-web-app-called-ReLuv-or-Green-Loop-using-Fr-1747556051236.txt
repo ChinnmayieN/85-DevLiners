@@ -1,0 +1,67 @@
+Build a full-stack second-hand marketplace web app called **ReLuv** (or **Green Loop**) using:
+
+- Frontend: React.js (with React Router, Context API or Redux if needed)
+- Styling: Bootstrap (or Tailwind CSS if preferred)
+- Backend: Firebase Authentication + Firestore + Firebase Storage
+
+This is for a hackathon, so prioritize modularity, responsiveness, and fast UX.
+
+🌟 Core Features:
+
+1. 🔐 User Authentication
+   - Firebase Email/Password Auth
+   - Create/Edit profile with username
+   - Store user data in Firestore under `users`
+
+2. 📦 Product Listings
+   - Create listings with:
+     - Title, description, price, category (dropdown), image upload (Firebase Storage)
+     - Toggle for **Swap Mode**
+     - Auto-generated **Eco Score** per listing (mock logic based on category)
+   - Users can **view/edit/delete** their listings
+
+3. 🛍️ Product Browsing
+   - Display all listings (card/grid view) with title, price, image, eco score, swap badge
+   - Filter by category and search by title
+   - Product detail page with full listing info
+
+4. 🧾 Cart & Orders
+   - Add/remove items to cart
+   - Checkout flow with delivery address form
+   - View previous orders
+
+5. 📋 User Dashboard
+   - Edit profile, manage listings, view orders
+
+6. 🌱 Unique Features
+   - **Swap Mode**: Users can list items for swap instead of sale
+   - **Eco Score**: Each listing displays estimated CO₂ saved (mock score)
+
+📁 Firestore Database Schema:
+
+- `users/{userId}`:
+  - username, email, createdAt
+  - deliveryAddress: { name, phone, street, city, state, pincode }
+
+- `products/{productId}`:
+  - title, description, price, category, imageUrl, ownerId, ecoScore, isSwapMode, createdAt
+
+- `carts/{userId}`:
+  - items: [ { productId, title, price, imageUrl } ]
+
+- `orders/{orderId}`:
+  - userId, items: [ { productId, title, price } ], deliveryAddress, totalAmount, orderedAt
+
+🛠️ Requirements:
+- Use functional components with hooks (`useState`, `useEffect`, etc.)
+- Use React Router for navigation
+- Store auth state globally (e.g., Context or Firebase listener)
+- Ensure responsiveness using Bootstrap or Tailwind
+- Firebase Firestore rules to secure user-specific data
+- Image uploads with Firebase Storage (optional for placeholder)
+
+💡 Bonus:
+- Add loading states, error messages
+- Use `react-firebase-hooks` for Auth & Firestore
+
+Make sure code is modular, commented, and readable.

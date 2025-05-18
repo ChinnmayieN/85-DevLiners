@@ -9,6 +9,7 @@ export default function MyListings() {
   useEffect(() => {
     async function fetchMyProducts() {
       const data = await getMyProducts();
+      console.log("My products:", data);
       setProducts(data);
     }
     fetchMyProducts();

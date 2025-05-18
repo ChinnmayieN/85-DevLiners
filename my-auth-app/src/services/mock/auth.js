@@ -1,19 +1,18 @@
-// src/services/mock/auth.js
 const USERS_KEY = "ecom_users";
 const CURRENT_USER_KEY = "ecom_current_user";
 
 // Export with the exact names expected by authService.js
-export const mockRegister = async (email, password) => {
+export const mockRegister = async (name, email, password) => {
   const users = JSON.parse(localStorage.getItem(USERS_KEY) || "[]");
   
   if (users.some(user => user.email === email)) {
     throw new Error("User already exists");
   }
 
-  const newUser = { email, password };
+  const newUser = { name, email, password };
   users.push(newUser);
   localStorage.setItem(USERS_KEY, JSON.stringify(users));
-  return newUser;
+  return { name, email };  // Return only safe info (no password)
 };
 
 export const mockLogin = async ({ email, password }) => {
@@ -24,8 +23,9 @@ export const mockLogin = async ({ email, password }) => {
     throw new Error("Invalid credentials");
   }
 
-  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(user));
-  return user;
+  const sessionUser = { name: user.name, email: user.email };
+  localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(sessionUser));
+  return sessionUser;
 };
 
 export const mockLogout = async () => {

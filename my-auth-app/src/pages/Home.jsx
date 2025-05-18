@@ -23,13 +23,14 @@ export default function Home() {
     }, [navigate]);
 
   useEffect(() => {
-    // Ideally, filtering & search logic handled externally
-    async function fetchProducts() {
-      const allProducts = await getAllProducts();
-      setProducts(allProducts);
-    }
-    fetchProducts();
-  }, []);
+    const fetch = async () => {
+        const result = await getAllProducts();
+        console.log("Fetched products", result);  // Add this
+        setProducts(result);
+    };
+    fetch();
+    }, []);
+
 
   // Filtering example (Member 3 handles actual logic)
   const filteredProducts = products.filter(p => 

@@ -20,17 +20,21 @@ export const getProductById = async (id) => {
 
 export const addProduct = async (product) => {
   const currentUser = JSON.parse(localStorage.getItem("ecom_current_user"));
-  const products = JSON.parse(localStorage.getItem(PRODUCTS_KEY) || "[]");
-  
+  if (!currentUser || !currentUser.email) {
+    throw new Error("User not logged in");
+  }
+
+  const products = JSON.parse(localStorage.getItem("ecom_products") || "[]");
+
   const newProduct = {
     ...product,
     id: Date.now().toString(),
-    owner: currentUser?.email || 'demo@user.com',
+    owner: currentUser.email,
     createdAt: new Date().toISOString()
   };
-  
+
   products.push(newProduct);
-  localStorage.setItem(PRODUCTS_KEY, JSON.stringify(products));
+  localStorage.setItem("ecom_products", JSON.stringify(products));
   return newProduct;
 };
 
